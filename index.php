@@ -5,8 +5,7 @@
 <html>
     <head>
         <script src="https://snipp.ru/cdn/jquery/2.1.1/jquery.min.js"></script>
-        <!-- <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.11.0/dist/tf.min.js"></script>  -->
-
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.11.0/dist/tf.min.js"></script>
         <link rel="stylesheet" href="/web/css/index.css">
     </head>
     <body>
@@ -35,4 +34,8 @@
     </body>
 
     <script src="web/js/index.js"></script>
+    <script src="web/js/training-data.js"></script>
+    <script src="web/js/train.js"></script>
+    <script src="web/js/net.js"></script>
+    
 </html>
