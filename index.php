@@ -11,7 +11,7 @@
 <html>
     <head>
         <script src="https://snipp.ru/cdn/jquery/2.1.1/jquery.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.11.0/dist/tf.min.js"></script>
+        <!-- <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.11.0/dist/tf.min.js"></script> -->
         <link rel="stylesheet" href="/web/css/index.css">
     </head>
     <body>
@@ -51,6 +51,9 @@
                         </div>
                         <div class="mt-5">
                             <button id="find-way-button" class="button-primary w-100" type="button">Найти путь</button>
+                        </div>
+                        <div class="mt-5">
+                            <button id="clear-button" class="button-primary w-100" type="button">Сбросить</button>
                         </div>
                     </form>
                 </div>
