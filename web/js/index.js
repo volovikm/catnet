@@ -24,7 +24,7 @@ function setCatEatingToCoordinates(i,j)
 //Поле 
 function getMaxIndex()
 {
-    max_i=1;
+    max_i=0;
     $('#field').find('td').each(function(){
         i=Number.parseInt($(this).attr('i'));
         if(i>max_i)
@@ -33,7 +33,7 @@ function getMaxIndex()
         }
     });
 
-    max_j=1;
+    max_j=0;
     $('#field').find('td').each(function(){
         j=Number.parseInt($(this).attr('j'));
         if(j>max_j)
@@ -92,7 +92,7 @@ function clear()
 {
     $('.cat-eating').removeClass('cat-eating');
 
-    setCatToCoordinates(1,1);
+    setCatToCoordinates(0,0);
     food_i=localStorage.getItem('food_i');
     food_j=localStorage.getItem('food_j');
     setFoodToCoordinates(food_i,food_j);
@@ -106,6 +106,11 @@ $('#clear-button').on('click',function(){
 
 //Изменение положения
 $('#change-position-button').on('click',function(){
+    changePosition();
+});
+
+function changePosition()
+{
     clear();
 
     object=$('#object-input').val();
@@ -124,7 +129,7 @@ $('#change-position-button').on('click',function(){
 
     localStorage.setItem(object+'_i',object_i);
     localStorage.setItem(object+'_j',object_j);
-});
+}
 
 
 
@@ -135,31 +140,8 @@ const I=1;
 const J=2;
 
 $('#find-way-button').on('click',function(){
-    clear();
-    object=$('#object-input').val();
-
-    route={};
-    route[0]={};
-    route[0]['i']=1;
-    route[0]['j']=1;
-
-    interval=setInterval(function(){
-        route=move(route);
-    
-        //Встретил объект
-        if($('td.cat').hasClass(object))
-        {
-            cell=$('td.cat');
-            $(cell).removeClass('cat');
-            $(cell).addClass('cat-eating');
-
-            route=JSON.stringify(route);
-
-            console.log('Route finished:');
-            console.log(route);
-            clearInterval(interval);
-        }
-    },20);
+    result={};
+    findWay(result);
 });
 
 function move(route)
@@ -173,8 +155,8 @@ function move(route)
     route_length=Object.keys(route).length;
     
     while(
-        new_index['i']<1 || new_index['i']>max_index['i'] || 
-        new_index['j']<1 || new_index['j']>max_index['j'] || 
+        new_index['i']<0 || new_index['i']>max_index['i'] || 
+        new_index['j']<0 || new_index['j']>max_index['j'] || 
         (route[route_length-2] && route[route_length-2]['i']==new_index['i'] && route[route_length-2]['j']==new_index['j']) ||
         (new_index['i']==cat_i && new_index['j']==cat_j)
     )
@@ -190,6 +172,79 @@ function move(route)
     route[route_length]['j']=new_index['j'];
 
     return route;
+}
+
+function findWay()
+{
+    clear();
+    object=$('#object-input').val();
+
+    route={};
+    route[0]={};
+    route[0]['i']=1;
+    route[0]['j']=1;
+
+    while(true)
+    {
+        setTimeout(function(){},100);
+
+        route=move(route);
+        
+        //Встретил объект
+        if($('td.cat').hasClass(object))
+        {
+            cell=$('td.cat');
+            $(cell).removeClass('cat');
+            $(cell).removeClass(object);
+            $(cell).addClass('cat-eating');
+
+            cell_i=$(cell).attr('i');
+            cell_j=$(cell).attr('j');
+
+            let result={
+                'target':   {
+                    'i': cell_i,
+                    'j': cell_j,
+                },
+                'route': route,
+            };
+
+            return result;
+        }
+    }
+}
+
+
+
+//Воспроизведение путей
+function traceWay(target,route)
+{
+    clear();
+
+    object=$('#object-input').val();
+    $('.'+object).removeClass(object);
+    localStorage.setItem(object+'_i',target['i']);
+    localStorage.setItem(object+'_j',target['j']);
+    setFoodToCoordinates(target['i'],target['j']);
+
+    let step_=0;
+    interval=setInterval(function(){
+
+        $('td[i][j]').removeClass('cat');
+        setCatToCoordinates(route[step_]['i'],route[step_]['j']);
+
+        if($('td.cat').hasClass(object))
+        {
+            cell=$('td.cat');
+            $(cell).removeClass('cat');
+            $(cell).removeClass(object);
+            $(cell).addClass('cat-eating');
+
+            clearInterval(interval);
+        }
+
+        step_++;
+    },300);
 }
 
 
