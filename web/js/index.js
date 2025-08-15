@@ -181,8 +181,8 @@ function findWay()
 
     route={};
     route[0]={};
-    route[0]['i']=1;
-    route[0]['j']=1;
+    route[0]['i']=0;
+    route[0]['j']=0;
 
     while(true)
     {
@@ -244,7 +244,7 @@ function traceWay(target,route)
         }
 
         step_++;
-    },300);
+    },100);
 }
 
 
